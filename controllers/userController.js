@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 
 const registerUser = asyncHandler(async (req,res)=>{
-    const {userName, email, password,passwordConfirmation, role } = req.body;
+    const {userName, email, password,passwordConfirmation, role,isEmailVerified } = req.body;
     if(!userName|| !email || !password || !passwordConfirmation || !role){
         res.status(404).json({message:"add all the infos"});
      
@@ -19,7 +19,7 @@ const registerUser = asyncHandler(async (req,res)=>{
     const userAvailable = await User.findOne({email});
     if(userAvailable){
         res.status(400).json({ message: "user already exist" });;
-        // throw new Error("Exist!")
+        
     }
     const newUser = new User({
         userName,
