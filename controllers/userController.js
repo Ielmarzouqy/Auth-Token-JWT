@@ -63,9 +63,11 @@ if(user && (await bcrypt.compare(password, user.password))){
   
   );
    res.status(200).json({accessToken})
-
 }
-
 })
 
-module.exports = {registerUser, loginUser}
+const logoutUser = asyncHandler(async (req,res)=>{
+  res.json({message:"loged out"})
+})
+
+module.exports = {registerUser, loginUser, logoutUser}
