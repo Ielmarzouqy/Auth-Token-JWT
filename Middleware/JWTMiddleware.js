@@ -2,10 +2,12 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require("express-async-handler");
 require('dotenv').config()
 module.exports = (req,res,next)=>{
+  console.log('fffffffffffff');
     let token;
   let authHeader = req.headers.Authorization || req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
+    console.log(token);
     jwt.verify(token, process.env.ACCESS_TOKEN_SECERT, (err, decoded) => {
       if (err) {
         res.status(401).json({message:"user is not authorized"});
