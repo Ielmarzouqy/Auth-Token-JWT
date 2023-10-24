@@ -98,20 +98,6 @@ const registerUser = asyncHandler(async (req,res)=>{
       });
 }
 
-// const verifyEmail = async (req, res) => {
-//   const token = req.query.token;
-//   console.log(token);
-
-//   jwtMiddleware(req, res, (err) => {
-//     if (err) {
-//       res.send("Unauthorized");
-//       return;
-//     }
-//     // If the JWT is valid, you can access the user information through req.user.
-//     req.userId = req.user.id;
-//     res.send("Email verified");
-//   });
-// };
 
 
 const loginUser = asyncHandler(async (req,res)=>{
@@ -133,4 +119,91 @@ const logoutUser = asyncHandler(async (req,res)=>{
   res.json({message:"loged out"})
 })
 
-module.exports = {registerUser, loginUser, logoutUser , verifyEmail }
+// **************************************************************************
+
+const forgetPassword =  async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    
+    const resetToken = generateToken({user : user.email}); 
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 600000; 
+
+    await user.save();
+
+    const resetLink = `http://localhost:3000/api/users/reset-password?token=${resetToken}`;
+    sendPasswordResetEmail(email, resetLink); 
+
+
+    res.status(200).json({ message: "Password reset link sent successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+
+  function sendPasswordResetEmail(email, resetLink) {
+    const transport = nodemailer.createTransport({
+      host: "sandbox.smtp.mailtrap.io",
+          port: 2525,
+          auth: {
+            user: "2f0433f9c00cb7",
+            pass: "0a366ec0f2d833"
+          }
+    });
+  
+    const mailOptions = {
+      from: 'your_email@example.com',
+      to: email,
+      subject: 'Password Reset Link',
+      text: 'Here is your password reset link:',
+      html: `<a href="${resetLink}">Reset Password</a>`,
+    };
+  
+    transport.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Password reset email sent: ' + info.response);
+      }
+    });
+  }
+  
+}
+
+
+
+const resetPassword =  async (req, res) => {
+
+  console.log("reset pwd")
+  const { token, newPassword } = req.body;
+
+  const user = await User.findOne({
+
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid or expired token' });
+  }
+
+  const hashPwd = await bcrypt.hash(newPassword, 10);
+  user.password = hashPwd;
+
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: 'Password reset successful' });
+}
+
+module.exports = {registerUser, loginUser, logoutUser , verifyEmail, forgetPassword, resetPassword }

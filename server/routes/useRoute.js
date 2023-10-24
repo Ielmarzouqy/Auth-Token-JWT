@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {registerUser, loginUser, logoutUser , verifyEmail} = require('../controllers/userController');
+const {registerUser, loginUser, logoutUser , verifyEmail, forgetPassword, resetPassword} = require('../controllers/userController');
 const JWTMiddleware = require("../Middleware/JWTMiddleware");
 
 router.post('/register', registerUser)
@@ -16,6 +16,11 @@ router.post('/curent',(req,res)=>{
 })
 
 router.get('/verify',verifyEmail);
+
+router.post('/forgot-password',forgetPassword);
+router.get('/reset-password',resetPassword);
+
+
 
 
 module.exports = router;
