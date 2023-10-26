@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req,res)=>{
   const accessToken = generateToken({user : newUser.email})
   console.log(generateToken);
 
-      const link=`http://localhost:3000/api/users/verify?token=${accessToken}`
+      const link=`http://localhost:5000/api/users/verify?token=${accessToken}`
       function verifyEmail(email,link){
       
         let transport = nodemailer.createTransport({
@@ -139,7 +139,7 @@ const forgetPassword =  async (req, res) => {
 
     await user.save();
 
-    const resetLink = `http://localhost:3000/api/users/reset-password?token=${resetToken}`;
+    const resetLink = `http://localhost:5000/api/users/reset-password?token=${resetToken}`;
     sendPasswordResetEmail(email, resetLink); 
 
 
