@@ -42,7 +42,7 @@ function sideBar() {
         <img
           src="/images/logo.png"
           height="50"
-          alt="MDB Logo"
+          alt=" Logo"
           loading="lazy"
         />
       </a>

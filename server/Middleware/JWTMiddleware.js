@@ -8,7 +8,7 @@ module.exports = (req,res,next)=>{
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
     console.log(token);
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECERT, (err, decoded) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err) {
         res.status(401).json({message:"user is not authorized"});
         throw new Error("User is not authorized");

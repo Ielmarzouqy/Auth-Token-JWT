@@ -1,9 +1,5 @@
 import React from 'react';
-// import Button from 'react-bootstrap/Button';
-// import Container from 'react-bootstrap/Container';
-// import Card from 'react-bootstrap/Card';
-// import CardBody from 'react-bootstrap/CardBody';
-// import Input from 'react-bootstrap/Input';
+
 import {
   MDBBtn,
   MDBContainer,

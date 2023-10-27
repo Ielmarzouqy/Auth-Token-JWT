@@ -8,7 +8,7 @@ function HomeScreen() {
   return (
    
     <div className=" " id="login">
-        {/* <section id="inner-wrapper gap-4 mt-4 card" class="login">
+        {/* <section id="inner-wrapper gap-4 mt-4 card" className="login">
          <img src="" alt="" />
          <p></p>
         </section> */}

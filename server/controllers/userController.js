@@ -36,7 +36,7 @@ const registerUser = asyncHandler(async (req,res)=>{
     
       await newUser.save();
 
-  const accessToken = generateToken({user : newUser.email})
+  const accessToken = generateToken({email : newUser.email})
   console.log(generateToken);
 
       const link=`http://localhost:5000/api/users/verify?token=${accessToken}`
@@ -84,19 +84,32 @@ const registerUser = asyncHandler(async (req,res)=>{
       });
 })
 
- const verifyEmail = async(req, res) => {
-  const token = req.query.token
-  console.log(token);
-  jwt.verify(token,
-      process.env.ACCESS_TOKEN_SECERT,
-      (err, decoded) => {
-          if (err) {
-              res.send("Unauthorized");
-          }
-          req.userId = decoded.id;
-          res.send("email virefed");
-      });
-}
+
+const verifyEmail = async (req, res) => {
+  const token = req.query.token;
+  try {
+    console.log(process.env.ACCESS_TOKEN_SECRET)
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const email = decoded.email;
+    
+    const user = await User.findOne({email}); 
+
+    if (!user) {
+      console.log("User not found for email:", email);
+      return res.status(404).send("User not found");
+    } else {      
+      
+      user.isEmailVerified = true;
+      await user.save();
+
+      console.log("Email verified for user:", user);
+      res.send("Email verified");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(401).send("Unauthorized");
+  }
+};
 
 
 
@@ -106,7 +119,7 @@ const loginUser = asyncHandler(async (req,res)=>{
     res.status(400).json({message:"All fields are mandatory!"});
   }
   const user = await User.findOne({email})
-if(user && (await bcrypt.compare(password, user.password))){
+if(user && (await bcrypt.compare(password, user.password)) && user.isEmailVerified == true ){
 
   const accessToken = generateToken({user : user.email})
   console.log(generateToken);
@@ -177,8 +190,6 @@ const forgetPassword =  async (req, res) => {
   }
   
 }
-
-
 
 const resetPassword =  async (req, res) => {
 
