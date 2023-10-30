@@ -18,7 +18,7 @@ router.post('/curent',(req,res)=>{
 router.get('/verify',verifyEmail);
 
 router.post('/forgot-password',forgetPassword);
-router.get('/reset-password',resetPassword);
+router.post('/reset-password/', resetPassword);
 
 
 

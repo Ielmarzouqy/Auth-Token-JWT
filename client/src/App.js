@@ -6,6 +6,10 @@ import Register from './pages/register';
 import Login from './pages/login';
 import HomeScreen from './pages/homeScreen';
 import Dashboard from './pages/dashboard';
+import Frgetpwd from './pages/forgetpwd';
+import Resetpwd from './pages/resetpwd';
+
+
 
 
 function App() {
@@ -19,6 +23,11 @@ function App() {
           <Route path="/" element={<HomeScreen />} />
           <Route path="/nav" element={<navBar />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login/forget-password" element={<Frgetpwd />} />
+
+          <Route path="/login/forget-password/reset-password" element={<Resetpwd />} />
+
+
 
         </Routes>
       </BrowserRouter>

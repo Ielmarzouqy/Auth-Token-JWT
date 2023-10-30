@@ -1,5 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const Role = require('../models/roleModel');
+
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer');
@@ -84,6 +87,20 @@ const registerUser = asyncHandler(async (req,res)=>{
       });
 })
 
+// const getRoles = async (req, res) => {
+  
+//     console.log("rolllee");
+//     next();
+    // const roles = await Role.find(); 
+
+    // res.status(200).json(roles);
+
+  //  catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ message: 'Internal Server Error' });
+  // }
+// }
+
 
 const verifyEmail = async (req, res) => {
   const token = req.query.token;
@@ -111,7 +128,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-
+// $*******************************************************
 
 const loginUser = asyncHandler(async (req,res)=>{
   const { email, password } = req.body;
@@ -145,14 +162,11 @@ const forgetPassword =  async (req, res) => {
     }
 
     
-    const resetToken = generateToken({user : user.email}); 
-
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 600000; 
+    const token = generateToken({user : user.email}); 
 
     await user.save();
 
-    const resetLink = `http://localhost:5000/api/users/reset-password?token=${resetToken}`;
+    const resetLink = `http://localhost:3000/Login/forget-password/reset-password?token=${token}`;
     sendPasswordResetEmail(email, resetLink); 
 
 
@@ -192,29 +206,30 @@ const forgetPassword =  async (req, res) => {
 }
 
 const resetPassword =  async (req, res) => {
+  const token = req.query.token;
+  console.log(token);
+  const {newPassword}=req.body;
+  try{
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const email = decoded.user;
+    
+    console.log(email)
 
-  console.log("reset pwd")
-  const { token, newPassword } = req.body;
 
-  const user = await User.findOne({
+    const user = await User.findOne({email}); 
+    if (email!== user.email) {
+          return res.status(400).json({ message: 'Invalid or expired email' });
+        }
+      
+  const hachPassword = await bcrypt.hash(newPassword,10)
+  await User.findOneAndUpdate({email: email},{password:hachPassword})
+  console.log(hachPassword,newPassword)
+  return res.json({ success: true, message: 'Mot de passe réinitialisé avec succès.' });
+}
+catch(error){
+  res.status(500).json({ success: false, error: error.message });
 
-    resetPasswordToken: token,
-    resetPasswordExpires: { $gt: Date.now() },
-  });
-
-  if (!user) {
-    return res.status(400).json({ message: 'Invalid or expired token' });
-  }
-
-  const hashPwd = await bcrypt.hash(newPassword, 10);
-  user.password = hashPwd;
-
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-
-  await user.save();
-
-  res.status(200).json({ message: 'Password reset successful' });
+}
 }
 
 module.exports = {registerUser, loginUser, logoutUser , verifyEmail, forgetPassword, resetPassword }

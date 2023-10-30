@@ -1,13 +1,13 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
-const userRoute =require('../routes/useRoute')
+const userRoute =require('../routes/userRoute');
+
 const connectDb = require('../config/dbConnection');
 const dotEnv = require('dotenv').config();
 
 const cors = require('cors');
-
-// const corsOptions = 
+ 
 app.use(cors({
   origin: 'http://localhost:3000',
  }))
@@ -25,6 +25,11 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/users", userRoute);
+
+// app.use("/api/roles", roleRoute);
+
+
+// require("../routes/roleRoute")(app);
 
 
 
