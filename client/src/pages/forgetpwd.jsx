@@ -24,22 +24,37 @@ function PasswordReset() {
   };
 
   return (
-    <div>
-      <h1>Password Reset</h1>
-      <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button onClick={handlePasswordReset}>Send Reset Link</button>
-      <p>{message}</p>
+    
+    <div className="container overflow-y-hidden overflow-x-hidden bg-white">
+  <div className="row justify-content-center align-items-center">
+    <div className="col-md-6 col-sm-12 text-center">
+      <img src="/images/forget.png" alt="" />
+    </div>
+    <div className="col-md-6 p-4 mt-4 col-sm-12">
+      <h1 className="">Forgot Password?</h1>
+      <p className='fs-2'>Enter the email address associated</p> <p className='fs-2'> with your account</p>
+      <div className=''>
       <div>
-        {/* <a href=""> Change your password</a> */}
-        <Link className="nav-link active" aria-current="page" to={`reset-password`}>Change your password</Link>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className='col-form-label  p-2 border-1 mx-auto'
+        />
+      </div>
+      <div className='text-center '>
+        <button className=' p-2 ml-4 btn rounded btn-info text-white fw-bold fs-3' onClick={handlePasswordReset}>Send </button>
 
       </div>
+      </div>
+      <p>{message}</p>
+      <div>
+      </div>
     </div>
+  </div>
+</div>
+
   );
 }
 

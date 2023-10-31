@@ -37,12 +37,8 @@ body {
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
   }
-  /* .hero-img{
-    background-image: url("../public/images/cover1.png");
-    background-color: #cccccc;
-    height: 500px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-  } */
+ 
+
+  .backg{
+    width: 25%
+  }

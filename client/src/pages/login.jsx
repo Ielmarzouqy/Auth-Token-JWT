@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import {  Link } from 'react-router-dom';
+import {  Link} from 'react-router-dom';
 
 import {
   MDBBtn,
@@ -17,8 +17,11 @@ import {
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const [authenticated, setAuthenticated] = useState(false);
+
 
   const handleLogin = async () => {
+    
     try {
       const response = await axios.post('http://localhost:5000/api/users/login', {
         email: email,
@@ -29,14 +32,21 @@ function Login() {
         const { accessToken, message } = response.data;
         console.log(message);
         console.log(accessToken);
+        // setAuthenticated(true);
+        // console.log(authenticated)
+
       }
     } catch (error) {
       console.error('Login error:', error);
     }
+
   };
 
   return (
     <MDBContainer fluid>
+       {/* {authenticated ? (
+      <Link to={`../dashboard`} />
+    ) : ( */}
       <MDBCard className='text-black m-5' style={{ borderRadius: '25px' }}>
         <MDBCardBody>
           <MDBRow>
@@ -85,6 +95,7 @@ function Login() {
           </MDBRow>
         </MDBCardBody>
       </MDBCard>
+       {/* )} */}
     </MDBContainer>
   );
 }

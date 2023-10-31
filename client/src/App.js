@@ -1,5 +1,5 @@
 
-import './App.css';
+// import './App.css';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
 import Register from './pages/register';
