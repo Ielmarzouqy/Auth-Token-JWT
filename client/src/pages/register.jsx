@@ -1,5 +1,5 @@
 // import {React, useState} from 'react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import {
@@ -21,10 +21,21 @@ function Register() {
     email: '',
     password: '',
     passwordConfirmation: '',
-    role: "652eaed73b243ebd24c2db86"
+    role: ''
 
   });
+  const [roles, setRoles] = useState([]); // State to store the roles
 
+  useEffect(() => {
+    // Fetch roles from the backend when the component mounts
+    Axios.get('http://localhost:5000/api/roles/role')
+      .then((response) => {
+        setRoles(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,6 +96,20 @@ function Register() {
                           value={formData.passwordConfirmation}
                           onChange={handleChange}  id='form4' type='password'/>
                       </div>
+                      <div className="d-flex flex-row align-items-center mb-4">
+  <select
+    name="role"
+    value={formData.role}
+    onChange={handleChange}
+    className="form-select"
+  >
+    {roles.map((role) => (
+      <option key={role._id} value={role._id}>
+        {role.name}
+      </option>
+    ))}
+  </select>
+</div>
     
                      <MDBBtn className='mb-4 bg-warning'  size='lg'>Register</MDBBtn>
                   </form>
