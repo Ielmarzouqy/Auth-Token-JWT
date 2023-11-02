@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const app = require('../express/app');
-
+require('dotenv').config();
 
 const connect = () =>{
-    mongoose.connect(`mongodb://127.0.0.1:27017/AlloMedia`)
+    mongoose.connect(process.env.DB_URL)
     .then(res => console.log(`connected, result : ${res}`))
     .catch(console.log)
 }

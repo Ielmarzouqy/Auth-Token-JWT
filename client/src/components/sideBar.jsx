@@ -4,7 +4,7 @@ import React from 'react';
 function sideBar() {
   return (
      
-<header>
+<div>
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
       <div class="list-group list-group-flush mx-3 mt-4">
@@ -34,7 +34,7 @@ function sideBar() {
 
 
 
-  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+  <div id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
     <div class="container-fluid">
       
     
@@ -46,19 +46,11 @@ function sideBar() {
           loading="lazy"
         />
       </a>
-    
-      
-
-      <ul class="navbar-nav ms-auto d-flex flex-row">
-        
-       
-
-      </ul>
     </div>
-   
-  </nav>
  
-</header>
+  </div>
+  
+</div>
     
   );
 }

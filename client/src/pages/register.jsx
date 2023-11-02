@@ -24,13 +24,13 @@ function Register() {
     role: ''
 
   });
-  const [roles, setRoles] = useState([]); // State to store the roles
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    // Fetch roles from the backend when the component mounts
     Axios.get('http://localhost:5000/api/roles/role')
       .then((response) => {
         setRoles(response.data);
+        console.log(response)
       })
       .catch((error) => {
         console.error(error);

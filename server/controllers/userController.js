@@ -99,7 +99,7 @@ const verifyEmail = async (req, res) => {
   try {
     console.log(process.env.ACCESS_TOKEN_SECRET);
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const email = decoded.userEmail;
+    const email = decoded.email;
 
     const user = await User.findOne({ email });
 
@@ -157,7 +157,7 @@ const forgetPassword = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const token = generateToken({ user: user.email });
+    const token = generateToken({ email: user.email });
 
     await user.save();
 
@@ -206,18 +206,19 @@ const resetPassword = async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    const vemail = decoded.userEmail;
-  
-    const user = await User.findOne({ email: vemail.user });
+    const email = decoded.email;
+  console.log(email);
+    const user = await User.findOne({ email });
 
-    if (vemail.user !== user.email) {
+
+    if (email !== user.email) {
       return res.status(400).json({ message: 'Invalid or expired email' });
     }
 
     const hachPassword = await bcrypt.hash(newPassword, 10);
     console.log(hachPassword);
     await User.findOneAndUpdate(
-      { email: vemail.user },
+      { email },
       { password: hachPassword }
     );
 
@@ -229,6 +230,8 @@ const resetPassword = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
 
 module.exports = {
   registerUser,

@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const userRoute = require('../routes/userRoute');
 const roleRoute = require('../routes/roleRoute');
+// const newRole = require('../objects/roleObj');
+
 
 const connectDb = require('../config/dbConnection');
-const dotEnv = require('dotenv').config();
+require('dotenv').config();
 
 const cors = require('cors');
 
@@ -27,10 +29,12 @@ app.get('/', (req, res) => {
   res.json({ message: 'hi minaa' });
 });
 
+// console.log("Role in app.js:", newRole);
+
+
 app.use('/api/users', userRoute);
 
 app.use('/api/roles', roleRoute);
 
-// require("../routes/roleRoute")(app);
 
 module.exports = app;

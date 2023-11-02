@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import {  Link} from 'react-router-dom';
+import {  Link, useNavigate} from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 import {
   MDBBtn,
@@ -17,7 +18,7 @@ import {
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleLogin = async () => {
@@ -32,21 +33,18 @@ function Login() {
         const { accessToken, message } = response.data;
         console.log(message);
         console.log(accessToken);
-        // setAuthenticated(true);
-        // console.log(authenticated)
-
+        
+        navigate('/dashboard');
       }
     } catch (error) {
       console.error('Login error:', error);
     }
 
+
   };
 
   return (
     <MDBContainer fluid>
-       {/* {authenticated ? (
-      <Link to={`../dashboard`} />
-    ) : ( */}
       <MDBCard className='text-black m-5' style={{ borderRadius: '25px' }}>
         <MDBCardBody>
           <MDBRow>

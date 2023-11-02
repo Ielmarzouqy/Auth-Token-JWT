@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler')
 
 function  generateToken(user){ 
     const token = jwt.sign(
-        {userEmail:user},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10m'}
+        user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10m'}
     )
     return token;
 }
