@@ -130,10 +130,13 @@ const loginUser = asyncHandler(async (req, res) => {
   if (
     user &&
     (await bcrypt.compare(password, user.password)) &&
-    user.isEmailVerified == true
+    user.isEmailVerified == true &&
+    user.role == "654396e38f77988a1b1b7122"
+
   ) {
     const accessToken = generateToken({ user: user.email });
     console.log(generateToken);
+    console.log(user.role)
 
     res
       .status(200)
@@ -231,8 +234,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   registerUser,
   loginUser,
@@ -240,4 +241,5 @@ module.exports = {
   verifyEmail,
   forgetPassword,
   resetPassword,
+  getUsers
 };

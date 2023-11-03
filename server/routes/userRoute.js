@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {registerUser, loginUser, logoutUser , verifyEmail, forgetPassword, resetPassword} = require('../controllers/userController');
+const {registerUser, loginUser, logoutUser , verifyEmail, forgetPassword, resetPassword, getUsers} = require('../controllers/userController');
 const JWTMiddleware = require("../Middleware/JWTMiddleware");
 
 router.post('/register', registerUser)
@@ -9,6 +9,8 @@ router.post('/register', registerUser)
 router.post('/login',loginUser)
 
 router.get('/logout',JWTMiddleware,logoutUser)
+router.get('/users',getUsers)
+
 
   
 router.post('/curent',(req,res)=>{
